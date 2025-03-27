@@ -1,0 +1,14 @@
+/* style.css */
+body {
+    font-family: sans-serif;
+    margin: 20px;
+  }
+  
+  #filings-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #filings-list li {
+    margin-bottom: 5px;
+  }
