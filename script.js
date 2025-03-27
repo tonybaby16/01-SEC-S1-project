@@ -1,11 +1,17 @@
 // script.js
 const ciks = [
-    "0001675249", // Example: Rivian Automotive, Inc.
-    "0001823085", // Example: Reddit, Inc.
+    "0001675249", // Rivian Automotive, Inc.
+    "0001823085", // Reddit, Inc.
+    "0000320193", // Apple Inc.
+    "0001318605", // Tesla, Inc.
+    "0001045810", // NVIDIA Corporation
+     "0001769628",
+     "0001855474",
     // Add more CIKs here
   ];
   
   async function getFilings(cik) {
+    console.log(`Fetching data for CIK: ${cik}`); // Add this line
     const url = `https://data.sec.gov/submissions/CIK${cik}.json`;
   
     try {
@@ -20,6 +26,7 @@ const ciks = [
       }
   
       const data = await response.json();
+      console.log(`Data fetched for CIK ${cik}:`, data); // Add this line
       return data;
     } catch (error) {
       console.error(`Could not fetch data for CIK ${cik}:`, error);
@@ -28,6 +35,7 @@ const ciks = [
   }
   
   function displayRecentS1Filings(data, cik) {
+    console.log(`Displaying filings for CIK: ${cik}`, data); // Add this line
     if (!data || !data.filings || !data.filings.recent) {
       console.warn(`No filings found for CIK ${cik}`);
       return;
@@ -51,8 +59,8 @@ const ciks = [
     // Sort by filing date (most recent first)
     s1Filings.sort((a, b) => new Date(b.filingDate) - new Date(a.filingDate));
   
-    // Take the top 10
-    const top10Filings = s1Filings.slice(0, 10);
+    // **Remove the slice operation**
+    // const top10Filings = s1Filings.slice(0, 10);
   
     // Display the filings on the page
     const filingsList = document.getElementById("filings-list");
@@ -61,7 +69,15 @@ const ciks = [
       return;
     }
   
-    top10Filings.forEach((filing) => {
+    // **Check if s1Filings is empty**
+    if (s1Filings.length === 0) {
+      const listItem = document.createElement("li");
+      listItem.textContent = `No S-1 filings found for CIK ${cik}`;
+      filingsList.appendChild(listItem);
+      return; // Exit the function
+    }
+  
+    s1Filings.forEach((filing) => { // Use s1Filings directly
       const listItem = document.createElement("li");
       const filingLink = document.createElement("a");
   
